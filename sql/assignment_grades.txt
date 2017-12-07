@@ -1,0 +1,37 @@
+/**
+* ASSIGNMENT GRADES
+**/
+select 
+	grade_event.id as grade_id,
+	grade_event.event_date as grade_date,
+	role.id as student_id,
+	grade_value.name as grade_name,
+	grade_value.abbr as grade_abrreviation,
+	grade_value.gpa as grade_value,
+	course.name as course_name,
+	course.id as course_id,
+	subject.name as subject_name,
+	study_year.name as year,
+	-- country.name
+from 
+	role 
+	inner join grade_event on role.id = grade_event.student_id 
+	inner join grade_type on grade_event.grade_type_id = grade_type.id 
+	inner join grade_value on grade_event.grade_value_id = grade_value.id 
+	left join journal_event on grade_event.journal_event_id = journal_event.id 
+	left join todo on grade_event.todo_institution_id = todo.id 
+	left join journal on journal_event.journal_id = journal.id 
+	left join journal as jj on todo.journal_id = jj.id 
+	left join course on journal.course_id = course.id 
+	left join course as cc on jj.course_id = cc.id 
+	inner join subject on course.subject_id = subject.id
+	-- inner join study_year on role.study_year_id = study_year.id
+	-- inner join institution on grade_event.todo_institution_id = institution.id
+	-- inner join country on institution.country_id = country.id
+
+	
+where 
+	study_year.name = '2015/2016'
+	and role.parallel_identifier_id = 250001151
+	and role.class_level_id = 8
+	and country.name = 'Estonia'

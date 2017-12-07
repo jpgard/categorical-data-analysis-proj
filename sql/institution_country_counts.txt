@@ -1,0 +1,10 @@
+/**
+* COUNTRY COUNTS
+**/
+
+SELECT country.name, count(*) as c 
+from institution 
+inner join country 
+on institution.country_id = country.id 
+group by country.name 
+order by c desc

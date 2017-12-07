@@ -1,0 +1,18 @@
+
+/**
+* COUNTS OF GRADES BY INSTITUTON
+**/
+select  
+	role.institution_id,
+	count(*) as c
+from 
+	role
+inner join grade_event on role.id = grade_event.student_id 
+inner join study_year on role.study_year_id = study_year.id
+where 
+	role.institution_id is not null
+	and study_year.name = '2015/2016'
+    and role.class_level_id = 8
+group by institution_id
+order by c desc
+
