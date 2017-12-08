@@ -1,0 +1,4 @@
+Notes about the subject analysis
+
+12/8/17
+I am really having a hard time getting the data into a format that could use a test for independence. I think that more data needs to be pulled. Instead of just getting the school aggregated counts, I think we need the data by student. Right now if we see that 100 people got 3's in Biology, we do not know how to split up those 3's across the Chemistry grade distribution. Did all 100 people also get 3's in Chemistry? Having by student data will allow us to correctly classify a student across both subjects.
