@@ -1,0 +1,31 @@
+/**
+* FINAL GRADES BY STUDENT AND TERM
+**/
+
+select 
+	role.id as student_id,
+    role.institution_id as institution_id,
+    grade_event.term_id as term_id,
+    course.id as course_id,
+    course.name as course_name,
+    subject.name as course_subject,
+    grade_value.gpa as grade_value
+from 
+	role 
+	inner join grade_event on role.id = grade_event.student_id 
+	inner join grade_type on grade_event.grade_type_id = grade_type.id 
+	inner join grade_value on grade_event.grade_value_id = grade_value.id
+    inner join study_year on role.study_year_id = study_year.id
+    inner join journal_event on grade_event.journal_event_id = journal_event.id 
+    inner join journal on journal_event.journal_id = journal.id 
+    inner join course on journal.course_id = course.id 
+    left join subject on course.subject_id = subject.id
+    inner join institution on role.institution_id = institution.id
+    inner join country on institution.country_id = country.id
+where 
+	role.institution_id in ('523', '519', '524')
+	and study_year.name = '2015/2016'
+    and role.class_level_id = 8
+    and grade_event.term_id is not null
+    and grade_value is not null
+    and country.name = 'Estonia'
