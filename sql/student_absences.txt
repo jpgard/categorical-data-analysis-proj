@@ -1,0 +1,28 @@
+    select 
+        -- role.institution_id as instutition_id
+        -- ,journal_event.term_id as term_id
+        course.id as course_id
+        -- ,subject.name as subject_name
+        ,role.id as student_id
+        ,absence_type.name as absence_type
+        -- ,absence_event.id as absence_id
+        ,COUNT(distinct absence_event.id) as absence_count
+    from 
+        role 
+        inner join absence_event on role.id = absence_event.student_id
+        left join absence_type on absence_event.absence_type_id = absence_type.id
+        inner join journal_event on absence_event.lesson_event_id = journal_event.id
+        left join absence_reason on absence_event.student_id = absence_reason.student_id
+        inner join grade_event on journal_event.id = grade_event.journal_event_id
+        inner join journal on journal_event.journal_id = journal.id 
+        inner join course on journal.course_id = course.id 
+        inner join subject on course.subject_id = subject.id
+        inner join study_year on role.study_year_id = study_year.id
+    where 
+        role.institution_id in ('523', '519', '633', '502', '524')
+        and study_year.name = '2015/2016'
+        and role.class_level_id = 8
+        and journal_event.event_date between absence_reason.start_date and absence_reason.end_date
+    group by
+    	course.id, role.id, absence_type.name
+    -- limit 10
