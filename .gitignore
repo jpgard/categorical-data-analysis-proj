@@ -1,4 +1,4 @@
-data
+data/*
 # example of file not to ignore
 !data/test_data.txt
 
