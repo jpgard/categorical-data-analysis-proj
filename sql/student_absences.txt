@@ -1,7 +1,8 @@
     select 
         -- role.institution_id as instutition_id
         -- ,journal_event.term_id as term_id
-        course.id as course_id
+        journal_event.term_id as term_id
+        ,course.id as course_id
         -- ,subject.name as subject_name
         ,role.id as student_id
         ,absence_type.name as absence_type
@@ -24,5 +25,5 @@
         and role.class_level_id = 8
         and journal_event.event_date between absence_reason.start_date and absence_reason.end_date
     group by
-    	course.id, role.id, absence_type.name
+        journal_event.term_id, course.id, role.id, absence_type.name
     -- limit 10
