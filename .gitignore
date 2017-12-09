@@ -1,4 +1,4 @@
 data/*
 # example of file not to ignore
 !data/test_data.txt
-
+!data/term_info.csv
