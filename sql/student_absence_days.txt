@@ -1,0 +1,25 @@
+-- records of individual absences by student
+-- aggregate by absence_length_days for total absence count by student, course, and type
+select distinct
+        role.institution_id
+        ,journal.course_id as course_id
+        ,role.id as student_id
+        ,at.name as absence_type
+    	,absence_event.id as absence_id
+        ,absence_reason.end_date - absence_reason.start_date + 1 as absence_length_days
+    from 
+        role 
+        inner join absence_event on role.id = absence_event.student_id
+        inner join (select distinct * from absence_type) as at on absence_event.absence_type_id = at.id
+        inner join journal_event on absence_event.lesson_event_id = journal_event.id
+        inner join absence_reason
+            on absence_event.student_id = absence_reason.student_id
+            and absence_event.absence_type_id = absence_reason.absence_type_id    
+        inner join journal on journal_event.journal_id = journal.id 
+        inner join study_year on role.study_year_id = study_year.id
+    where 
+        -- role.institution_id in ('523', '519', '633', '502', '524')
+        role.institution_id = '524'
+        and study_year.name = '2015/2016'
+        and role.class_level_id = 8
+

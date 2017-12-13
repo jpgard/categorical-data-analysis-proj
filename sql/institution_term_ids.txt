@@ -1,0 +1,21 @@
+-- get all of the term ids used by each institution, by course
+-- useful as a subquery; i.e., for absences.
+
+select distinct
+    role.institution_id as institution_id
+    ,grade_event.term_id as term_id
+    ,course.id as course_id
+    ,term.start_date
+    ,term.end_date
+from 
+	role 
+	inner join grade_event on role.id = grade_event.student_id 
+    inner join study_year on role.study_year_id = study_year.id
+    inner join journal_event on grade_event.journal_event_id = journal_event.id 
+    inner join journal on journal_event.journal_id = journal.id 
+    inner join course on journal.course_id = course.id 
+    inner join term on grade_event.term_id = term.id
+where 
+	role.institution_id in ('523', '519', '633', '502', '524')
+	and study_year.name = '2015/2016'
+    and role.class_level_id = 8
