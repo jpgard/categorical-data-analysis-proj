@@ -27,7 +27,3 @@ for(s in schools) {
   }
 }
 courses = Reduce(intersect, un_courses)
-# We are left with 12 courses. That will create 66 pairwise tests for independence.
-
-# Subset data to only included the courses in the list.
-data_sub = data[course_subject_EN %in% courses,,]

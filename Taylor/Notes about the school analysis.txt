@@ -32,10 +32,7 @@ factor(course_subject_EN)Physical Education -1.63191    0.03455  -47.23  < 2e-16
 factor(course_subject_EN)Physics             0.42480    0.02427   17.50  < 2e-16 ***
 factor(course_subject_EN)Russian Language    0.62398    0.02406   25.94  < 2e-16 ***
 
-
 --> The other model that I tried to run was a mixed effect model where the course was considered random as well. So there would be a random slope because of the school and a random intercept by the course. However, I am having a lot of problems. The model isn't converging or something. More work on that.
-
-
 
 **********
 * Idea: Do we have any school information? Private or Public? Size? % of students with certain reading level? To fit a hierarchical model we would need a second-level model that is all about the schools. I think this is a very natural place to use this type of model if we have this information. Check lecture 10 page 11 for notes.
@@ -104,3 +101,8 @@ course_subject_ENMathematics         0.77208    0.26438   2.920  0.00350 **
 course_subject_ENPhysical Education -2.06506    0.46236  -4.466 7.96e-06 ***
 course_subject_ENPhysics             0.04158    0.70069   0.059  0.95268    
 course_subject_ENRussian Language    0.70853    0.34560   2.050  0.04035 *
+
+12/11/17
+Did the CMH test implemented in mantelaen.test() in R. Did this test for including failing grades and for not. It didn't matter. p-value was 0. 
+** I am getting very confused. All these p-values of 0 would say that there IS an association. SO the schools do have a different grade distribution?
+??????????????????????????????????????????????????????????????????????????????????????????????????????????????????
