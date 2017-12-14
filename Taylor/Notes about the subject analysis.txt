@@ -4,3 +4,10 @@ Notes about the subject analysis
 I am really having a hard time getting the data into a format that could use a test for independence. I think that more data needs to be pulled. Instead of just getting the school aggregated counts, I think we need the data by student. Right now if we see that 100 people got 3's in Biology, we do not know how to split up those 3's across the Chemistry grade distribution. Did all 100 people also get 3's in Chemistry? Having by student data will allow us to correctly classify a student across both subjects.
 
 I pulled a new dataset called students_grades_total.csv from pg admin using the students_final_grades SQL query off github. The query produces 842,624 rows. However, everytime I try to save it to a csv, pg Admin crashes. LOL. That was also not the right query. Need to work on getting the data before we can do anything.
+
+12/10/17
+I was able to get the data. This is done using the students_final_grades SQL query but putting a select distinct. We were getting duplicates. 
+
+I performed the linear trend test for each pairwise course combination, within each term for each school. Got a p-value and a correlation for each test. The null would be that the two subjects are independent. Only about 8% of the tests fail to reject the null. So most of them show that there is an association between the two subjects. We saw that a lot of the missing grade values were ion the 1's and 2's. There are not a lot of failing grades. Because of that, we thought the only association was maybe due to all the 0's when it comes to failing grades. So we also ran the test with only grades >= 3. So no failing grades. This did not really change the results. Now 9% of the tests fail to reject, so we get some change.
+
+Made heat map plots for each test that we made. Made heatmaps for p-values and correlations. The p-value plots do not really show much distinction. Not good. Should we change the bounds on the p-value?

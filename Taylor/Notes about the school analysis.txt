@@ -40,3 +40,67 @@ factor(course_subject_EN)Russian Language    0.62398    0.02406   25.94  < 2e-16
 **********
 * Idea: Do we have any school information? Private or Public? Size? % of students with certain reading level? To fit a hierarchical model we would need a second-level model that is all about the schools. I think this is a very natural place to use this type of model if we have this information. Check lecture 10 page 11 for notes.
 *********
+
+12/10/17
+We aggregated across terms in the first model. This was maybe not a good idea. This time we are going to take the first term for each school only... Did that and still all the p-values are 0.
+
+We then when and fit the model that we did before. Now that we have less data, we can fit the model on all the data. We see that English and Estonian are not sig. Base case is still Biology.
+
+The standard deviation is 0.5532. It is bigger than half of the coefficients but smaller than half of them too. So we still do not think that there is much variation in schools.
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ institution_id (Intercept) 0.3061   0.5532  
+Number of obs: 189504, groups:  institution_id, 3
+
+Fixed effects:
+                                             Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                                 -0.947045   0.189386   -5.00 5.71e-07 ***
+factor(course_subject_EN)Chemistry           0.177413   0.022011    8.06 7.61e-16 ***
+factor(course_subject_EN)English             0.013934   0.022943    0.61    0.544    
+factor(course_subject_EN)Estonian Language  -0.002969   0.022923   -0.13    0.897    
+factor(course_subject_EN)History            -0.202058   0.023200   -8.71  < 2e-16 ***
+factor(course_subject_EN)Literature         -0.358965   0.023639  -15.19  < 2e-16 ***
+factor(course_subject_EN)Mathematics         0.731476   0.021699   33.71  < 2e-16 ***
+factor(course_subject_EN)Physical Education -1.884896   0.033947  -55.53  < 2e-16 ***
+factor(course_subject_EN)Physics             0.261881   0.022430   11.68  < 2e-16 ***
+factor(course_subject_EN)Russian Language    0.639143   0.021913   29.17  < 2e-16 ***
+
+
+Need sure how to interpret a model where there is also a random effects on the course.
+
+When only running the model on 1% of the data I get these weird warnings:
+Warning messages:
+1: In commonArgs(par, fn, control, environment()) :
+  maxfun < 10 * length(par)^2 is not recommended.
+2: In (function (fn, par, lower = rep.int(-Inf, n), upper = rep.int(Inf,  :
+  failure to converge in 10000 evaluations
+3: In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
+  Model failed to converge with max|grad| = 0.00368835 (tol = 0.001, component 1)
+
+Random effects:
+ Groups         Name                                Variance  Std.Dev. Corr                               
+ institution_id (Intercept)                         0.1924400 0.43868                                     
+                course_subject_ENChemistry          0.0402602 0.20065   0.37                              
+                course_subject_ENEnglish            0.0004997 0.02235   0.98  0.55                        
+                course_subject_ENEstonian Language  0.0279371 0.16714  -0.39 -1.00 -0.57                  
+                course_subject_ENHistory            0.1565991 0.39573   0.39  1.00  0.56 -1.00            
+                course_subject_ENLiterature         0.0029072 0.05392   0.14 -0.87 -0.06  0.85 -0.86      
+                course_subject_ENMathematics        0.0415641 0.20387   0.64  0.95  0.78 -0.96  0.96 -0.67
+                course_subject_ENPhysical Education 0.0517345 0.22745   0.26 -0.80  0.06  0.79 -0.79  0.99 -0.58
+                course_subject_ENPhysics            1.2225775 1.10570   0.75  0.89  0.87 -0.90  0.90 -0.55 0.99 -0.45
+                course_subject_ENRussian Language   0.1875733 0.43310   0.10  0.96  0.30 -0.96  0.96 -0.97 0.83 -0.94  0.73
+Number of obs: 1808, groups:  institution_id, 3
+
+Fixed effects:
+                                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                         -0.97212    0.31007  -3.135  0.00172 ** 
+course_subject_ENChemistry           0.22402    0.26841   0.835  0.40393    
+course_subject_ENEnglish             0.01242    0.25524   0.049  0.96118    
+course_subject_ENEstonian Language  -0.01726    0.27043  -0.064  0.94911    
+course_subject_ENHistory            -0.19359    0.34524  -0.561  0.57497    
+course_subject_ENLiterature         -0.36863    0.26525  -1.390  0.16461    
+course_subject_ENMathematics         0.77208    0.26438   2.920  0.00350 ** 
+course_subject_ENPhysical Education -2.06506    0.46236  -4.466 7.96e-06 ***
+course_subject_ENPhysics             0.04158    0.70069   0.059  0.95268    
+course_subject_ENRussian Language    0.70853    0.34560   2.050  0.04035 *

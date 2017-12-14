@@ -20,7 +20,11 @@ data = merge(grades, subs, by = c("institution_id","term_id", "course_id"), all.
 schools = unique(data$institution_id)
 un_courses = list()
 for(s in schools) {
-  un_courses[[as.character(s)]] = unique(subs[institution_id == s, course_subject_EN,]) 
+  terms = unique(data[institution_id == s, term_id,])
+  for(t in terms) {
+    un_courses[[as.character(paste0(s,"-",t))]] = unique(subs[institution_id == s & term_id == t, 
+                                                             course_subject_EN,])  
+  }
 }
 courses = Reduce(intersect, un_courses)
 # We are left with 12 courses. That will create 66 pairwise tests for independence.
