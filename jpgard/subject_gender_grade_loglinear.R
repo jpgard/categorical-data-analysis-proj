@@ -16,7 +16,6 @@ if (nrow(temp) == nrow(grade_df)){
 ########################################################################
 ######## LOGLINEAR MODELING
 ########################################################################
-N_CELLS = 150
 
 grade_counts <- grade_df %>% 
     mutate(gender = factor(gender), 
@@ -31,13 +30,46 @@ fit.saturated = glm(n ~ grade_value * course_subject.1 *gender * institution_id,
 # summary(fit.saturated)
 fit.saturated$deviance # note that deviance is almost exactly zero for this model
 pchisq(fit.saturated$deviance, fit.saturated$df.residual, lower.tail = F)
+## from saturated model, remove individual 2-way interactions with grade_value
+
+# remove grade_value*gender
+fit.sat.noGVgender = glm(n ~ grade_value * course_subject.1 *gender * institution_id - grade_value*gender, grade_counts_topn, family="poisson")
+pchisq(fit.sat.noGVgender$deviance - fit.saturated$deviance, 
+        df = fit.sat.noGVgender$df.residual - fit.saturated$df.residual, 
+        lower.tail = F)
+
+fit.sat.noGVinstitution = glm(n ~ grade_value * course_subject.1 *gender * institution_id - grade_value*institution_id, grade_counts_topn, family="poisson")
+pchisq(fit.sat.noGVinstitution$deviance - fit.saturated$deviance, 
+       df = fit.saturated$df.residual - fit.sat.noGVinstitution$df.residual, 
+       lower.tail = F)
+
+fit.sat.noGVsubject = glm(n ~ grade_value * course_subject.1 *gender * institution_id - grade_value*course_subject.1, grade_counts_topn, family="poisson")
+pchisq(fit.sat.noGVsubject$deviance - fit.saturated$deviance, 
+       df = fit.saturated$df.residual - fit.sat.noGVsubject$df.residual, 
+       lower.tail = F)
+
+fit.sat.noGVsubject = glm(n ~ grade_value * course_subject.1 *gender * institution_id - grade_value*course_subject.1, grade_counts_topn, family="poisson")
+pchisq(fit.sat.noGVsubject$deviance - fit.saturated$deviance, 
+       df = fit.saturated$df.residual - fit.sat.noGVsubject$df.residual, 
+       lower.tail = F)
+
+fit.sat.noGV = glm(n ~ grade_value + course_subject.1 *gender * institution_id, grade_counts_topn, family="poisson")
+pchisq(fit.sat.noGV$deviance - fit.saturated$deviance, 
+       df = fit.sat.noGV$df.residual- fit.saturated$df.residual, 
+       lower.tail = F)
+
 
 # conditional independence of all variables
 fit.indep = glm(n ~ grade_value + course_subject.1 + institution_id + gender, grade_counts_topn, family="poisson")
 pchisq(fit.indep$deviance, fit.indep$df.residual, lower.tail = F)
 ## course and institution
 fit.course.institution = glm(n ~ grade_value + course_subject.1 * institution_id + gender, grade_counts_topn, family="poisson")
-pchisq(fit.course.institution$deviance, fit.course.institution$df.residual, lower.tail = F)
+
+## course and institution and gender
+fit.course.institution = glm(n ~ grade_value + course_subject.1 * institution_id + gender, grade_counts_topn, family="poisson")
+
+## difference between conditional independence and saturated model
+pchisq(fit.indep$deviance - fit.saturated$deviance, fit.indep$df.residual - fit.saturated$df.residual, lower.tail = F)
 
 fit.loglin = glm(n ~ grade_value + course_subject.1 *gender * institution_id, grade_counts_topn, family="poisson")
 summary(fit.loglin)
